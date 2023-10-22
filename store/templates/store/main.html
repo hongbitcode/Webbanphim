@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>WEB</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<link rel="stylesheet" href="/static/css/main.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+	<script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+	<script type="text/javascript">
+		var user = '{{request.user}}'
+
+		function getToken(name) {
+		    var cookieValue = null;
+		    if (document.cookie && document.cookie !== '') {
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) {
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+
+		function getCookie(name) {
+		    // Split cookie string and get all individual name=value pairs in an array
+		    var cookieArr = document.cookie.split(";");
+
+		    // Loop through the array elements
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        /* Removing whitespace at the beginning of the cookie name
+		        and compare it with the given string */
+		        if(name == cookiePair[0].trim()) {
+		            // Decode the cookie value and return
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    // Return null if not found
+		    return null;
+		}
+		var cart = JSON.parse(getCookie('cart'))
+
+		if (cart == undefined){
+			cart = {}
+			console.log('Cart Created!', cart)
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+		console.log('Cart:', cart)
+	
+
+		
+	</script>
+	<style>
+	@import url();
+.form-inline-search{
+	width: 70%;
+	height: fit-content;
+	/* background: #060606; */
+	margin-right: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 4px 4px 30px rgba(0,0,0,0.06);
+}
+.form-inline-search form{
+	background: #fff;
+	width: 500px;
+	height: 40px;
+	display: flex;
+	
+}
+.form-inline-search form input {
+	flex: 1;
+	border: none;
+	outline: none;
+}
+.form-inline-search form button {
+	background: tomato;
+	padding: 0px 50px;
+	border: none;
+	outline: none;
+	color: #fff;
+	letter-spacing: 1px;
+	cursor: pointer;
+	line-height: 40px;
+}
+.form-inline-search form .fa-search {
+	align-self: center;
+	padding: 10px 20px;
+	color: #7777;
+}
+
+.navbar-nav {
+	display: inline-block ; 
+}
+.navbar-nav, .subnav {
+	list-style-type: none;
+}
+
+.navbar-nav li{
+	display: block;
+    position: relative;
+	text-decoration: none;
+}
+.navbar-nav >li>a{
+    color: #fff;
+    text-transform: uppercase;
+}
+.navbar-nav li a{
+    text-decoration: none;
+	/* line-height: 46px; */
+    padding: 0 20px;
+    display: block
+}
+.navbar-nav li:hover .subnav {
+    display: block;
+}
+.navbar-nav>li:hover> a,
+.navbar-nav .subnav li:hover a{
+    color: #000;
+    background-color: #dddd;
+}
+.navbar-nav .subnav {
+    width: 160px;
+    display: none;  
+    top: 100%;
+    left: 0; 
+	margin-left: 0;
+	/* padding-left: 0;  */
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0 , 0.3);
+	text-decoration: none;
+}
+
+.navbar-nav .subnav a {
+    color: #000;
+    /* padding: 0 12px; */
+    line-height: 38px;
+	
+}
+.navbar-nav .nav-link{
+    font-size: 21px;
+}
+
+/* #navbarSupportedContent .navbar-nav .nav-item .nav-link .subnav li a{
+	width: 100%;
+	left : 0;
+} */
+	</style>
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	  <a class="navbar-brand" href="{% url 'store' %}">HOME</a>
+	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+	    <span class="navbar-toggler-icon"></span>
+	  </button>
+
+	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+	    <div class="navbar-nav mr-auto">
+	      <li class="nav-item active">
+	        <a class="nav-link " href="{% url 'store' %}">Category <span class="sr-only">(current)</span>
+			</a>
+			<ul class="subnav">
+				<li><a href="">Clothes</a></li>
+				<li><a href="">Accessories</a></li>
+				<li><a href="">Device</a></li>
+			</ul>
+	      </li>
+	 
+	    </div>
+	    <div class="form-inline my-2 my-lg-0">
+			<div class="form-inline-search">
+			<form> 
+				<i class="fas fa-search"></i>
+				<input name="" id="search-item" type="text" placeholder="What are you looking for?">
+				<button type="submit">Search</button> 
+			</form>
+			</div>
+	     	<a href="#"class="btn btn-warning p-2 ">Login</a>
+	     	
+	     	<a href="{% url 'cart' %}">
+	    		<img  id="cart-icon" src="{% static 'images/cart.png' %}">
+	    	</a>
+	    	<p id="cart-total">{{cartItems}}</p>
+
+	    </div>
+	  </div>
+	</nav>
+
+     <div class="container">
+            <br>
+            {% block content %}
+
+
+            {% endblock content %}
+         </div>
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+	<script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+</body>
+</html>
